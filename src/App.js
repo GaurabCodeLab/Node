@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
 
-function App() {
+// Connect to the Socket.IO server
+const socket = io("http://localhost:1634/"); // Use your backend server's address
+
+const App = () => {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+
+  // Listen for incoming messages from the server
+  useEffect(() => {
+    socket.on("chat", (msg) => {
+      console.log("message hai", msg);
+      setMessages((prevMessages) => [...prevMessages, msg]);
+    });
+
+    // Cleanup on component unmount
+    return () => {
+      socket.off("chat");
+    };
+  }, []);
+
+  // Handle sending a new message
+  const sendMessage = (e) => {
+    e.preventDefault();
+    if (input.trim()) {
+      socket.emit("chat", input); // Send message to server
+      setInput(""); // Clear input field
+    }
+  };
+
+  console.log("mesage", messages);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Chat App</h1>
+      <div>
+        {messages.map((msg, index) => (
+          <p key={index}>{msg}</p>
+        ))}
+      </div>
+      <form onSubmit={sendMessage}>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type a message..."
+        />
+        <button type="submit">Send</button>
+      </form>
     </div>
   );
-}
+};
 
 export default App;
