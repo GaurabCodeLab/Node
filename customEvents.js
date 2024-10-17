@@ -15,7 +15,7 @@ eventObj.on("raja", (a) => {
 });
 
 eventObj.emit("raja", "ram", "kaam", "jaam");
-console.log("event hai", eventObj.emit("raja"));
+console.log("event hai", eventObj.emit("raja", "khaja"));
 
 app.listen(1634, () => {
   console.log("server is running");
