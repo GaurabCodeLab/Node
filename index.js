@@ -16,8 +16,8 @@ io.on("connection", (socket) => {
   socket.on("chat", (msg) => {
     io.emit("chat", msg);
   });
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
+  socket.on("disconnect", (reason) => {
+    console.log(`Server is disconnected dur to ${reason}`);
   });
 });
 
