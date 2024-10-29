@@ -1,24 +1,24 @@
 const fs = require("fs");
 
-const readable = fs.createReadStream("read.txt");
+const rs = fs.createReadStream("read.txt");
 
 // sequence of events which occurs are:- open=>data=>end=>close
-readable.on("data", (chunk) => {
-  console.log("data read hua", chunk);
+rs.on("data", (chunk) => {
+  console.log("data hua", chunk);
 });
 
-readable.on("open", () => {
+rs.on("open", () => {
   console.log("open hua");
 });
 
-readable.on("close", () => {
+rs.on("close", () => {
   console.log("close hua");
 });
 
-readable.on("end", () => {
+rs.on("end", () => {
   console.log("end hua");
 });
 
-readable.on("error", () => {
+rs.on("error", () => {
   console.log("error hua");
 });
